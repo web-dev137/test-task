@@ -14,9 +14,9 @@ type ItemRepo interface {
 }
 
 func (r *Repo) GetItems(ids []int) ([]models.Items, error) {
-	q := "SELECT * FROM items WHERE id = ANY($1)"
+	q := "SELECT * FROM items WHERE id = ANY($1)" //query
 	var items []models.Items
-	rows, err := r.db.Query(q, pq.Array(ids))
+	rows, err := r.db.Query(q, pq.Array(ids)) //executing query and taking data from db
 	if err != nil {
 		if err == sql.ErrNoRows {
 			log.WithFields(log.Fields{"error": err}).Error("Not found")
@@ -28,6 +28,9 @@ func (r *Repo) GetItems(ids []int) ([]models.Items, error) {
 	}
 	defer rows.Close()
 	item := models.Items{}
+	/*
+	*Here we need get values for saving data from query
+	 */
 	fields := reflect.ValueOf(&item).Elem()
 	numFields := fields.NumField()
 	columns := make([]interface{}, numFields)
@@ -36,7 +39,7 @@ func (r *Repo) GetItems(ids []int) ([]models.Items, error) {
 		columns[i] = field.Addr().Interface()
 	}
 	for rows.Next() {
-		err = rows.Scan(columns...)
+		err = rows.Scan(columns...) //save into item
 		if err != nil {
 			log.WithFields(log.Fields{"error": err}).Error("Internal error")
 			return items, err

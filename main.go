@@ -28,6 +28,9 @@ type CfgLogger struct {
 	LogMaxAge     int
 }
 
+/*
+*Setting db connect for postgres
+ */
 func Init(cfg *CfgDB) (*sql.DB, error) {
 	dns := fmt.Sprintf("host=%s user=%s password=%s port=%d dbname=%s sslmode=disable", cfg.PgHost, cfg.PgUser, cfg.PgPassword, cfg.PgPort, cfg.PgDbName)
 	db, err := sql.Open("postgres", dns)
@@ -42,6 +45,10 @@ func Init(cfg *CfgDB) (*sql.DB, error) {
 	}
 	return db, nil
 }
+
+/*
+*Setting logger
+ */
 func SetLog(cfg *CfgLogger) {
 	log.SetOutput(&lumberjack.Logger{
 		Filename:   cfg.LogFilename,
@@ -67,8 +74,8 @@ func main() {
 		log.WithFields(log.Fields{"error": err}).Error("Connected failed")
 	}
 	fmt.Println("connect success")
-	repo := *repository.NewRepo(db)
-	h := handler.NewHandler(&repo)
+	repo := *repository.NewRepo(db) //init repo
+	h := handler.NewHandler(&repo)  //init handler
 	router := gin.Default()
 	router.POST("/get-items", h.GetItems)
 	router.Run(":8080")
