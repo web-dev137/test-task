@@ -1,0 +1,53 @@
+package models
+
+type Items struct {
+	Id                            int
+	Uid                           string
+	Domain                        string
+	Cn                            string
+	Department                    string
+	Title                         string
+	Who                           string
+	Logon_count                   int
+	Num_logons7                   int
+	Num_share7                    int
+	Num_file7                     int
+	Num_ad7                       int
+	Num_n7                        int
+	Num_logons14                  int
+	Num_share14                   int
+	Num_file14                    int
+	Num_ad14                      int
+	Num_n14                       int
+	Num_logons30                  int
+	Num_share30                   int
+	Num_file30                    int
+	Num_ad30                      int
+	Num_n30                       int
+	Num_logons150                 int
+	Num_share150                  int
+	Num_file150                   int
+	Num_ad150                     int
+	Num_n150                      int
+	Num_logons365                 int
+	Num_share365                  int
+	Num_file365                   int
+	Num_ad365                     int
+	Num_n365                      int
+	Has_user_principal_name       bool
+	Has_mail                      bool
+	Has_phone                     bool
+	Flag_disabled                 bool
+	Flag_lockout                  bool
+	Flag_password_not_required    bool
+	Flag_password_cant_change     bool
+	Flag_dont_expire_password     bool
+	Owned_files                   int
+	Num_mailboxes                 int
+	Num_member_of_groups          int
+	Num_member_of_indirect_groups int
+	Member_of_indirect_groups_ids string
+	Member_of_groups_ids          string
+	Is_admin                      bool
+	Is_service                    string
+}
