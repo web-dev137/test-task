@@ -5,6 +5,10 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/web-dev137/test-task/docs"
+
 	_ "github.com/lib/pq"
 
 	"github.com/natefinch/lumberjack"
@@ -59,6 +63,14 @@ func SetLog(cfg *CfgLogger) {
 	log.SetLevel(log.DebugLevel)
 	log.SetFormatter(&log.JSONFormatter{})
 }
+
+// @title Test Task API
+// @version 1.0
+// @description REST API for Test task App
+
+// @host localhost:8000
+// @BasePath /api/v1/
+
 func main() {
 	cfgDB := &CfgDB{
 		"localhost",
@@ -76,7 +88,17 @@ func main() {
 	fmt.Println("connect success")
 	repo := *repository.NewRepo(db) //init repo
 	h := handler.NewHandler(&repo)  //init handler
-	router := gin.Default()
-	router.POST("/get-items", h.GetItems)
-	router.Run(":8080")
+
+	r := gin.Default()
+	docs.SwaggerInfo.BasePath = "/api/v1"
+	v1 := r.Group("/api/v1")
+	{
+		app := v1.Group("app")
+		{
+			app.POST("/get-items", h.GetItems)
+		}
+	}
+
+	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+	r.Run(":8080")
 }
